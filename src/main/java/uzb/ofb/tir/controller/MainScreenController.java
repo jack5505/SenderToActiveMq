@@ -2,27 +2,23 @@ package uzb.ofb.tir.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import uzb.ofb.tir.utils.ActiveMqOperations;
 import uzb.ofb.tir.utils.Utilits;
 
 import javax.jms.*;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class MainScreenController implements Initializable {
 
+    //PrefWidth 938
+    //PrefHeigh 859
     @FXML
     private TextArea  inputForm;
 
@@ -57,12 +53,20 @@ public class MainScreenController implements Initializable {
     private Scanner scanner;
 
     @FXML
+    private RadioButton request;
+
+    @FXML
+    private RadioButton requestR;
+
+    
+    @FXML
     private TextArea logs;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
 
+        request.fire();
         URL show = MainScreenController.class.getProtectionDomain().getCodeSource().getLocation();
         path = show.getPath();
         try {
@@ -144,13 +148,27 @@ public class MainScreenController implements Initializable {
                     MessageProducer producer = session.createProducer(queue);
                     TextMessage request = session.createTextMessage(inputForm.getText());
                     producer.send(request);
-                    logs.setText("Request sended correqts_in");
+                    System.out.println("Sended");
+                    logs.setText(logs.getText()+"Request sended correqts_in\n");
+                    Queue queue1 = session.createQueue("correqts_out");
+                    MessageConsumer messageConsumer = session.createConsumer(queue1);
+                    TextMessage message = (TextMessage) messageConsumer.receive();
+                    System.out.println("Recieve");
+                    logs.setText(logs.getText()+"Response get from correqts_out");
+                    inputForm.setText(inputForm.getText()+"\n"+message.getText());
                 } catch (JMSException e) {
                     e.printStackTrace();
                 }
 
             });
-
+            requestR.setOnAction(event -> {
+                requestR.setSelected(true);
+                request.setSelected(false);
+            });
+            request.setOnAction(event -> {
+                request.setSelected(true);
+                requestR.setSelected(false);
+            });
     }
 
 
