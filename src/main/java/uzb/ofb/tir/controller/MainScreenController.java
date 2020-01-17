@@ -9,7 +9,9 @@ import javafx.scene.control.TextField;
 import uzb.ofb.tir.utils.ActiveMqOperations;
 import uzb.ofb.tir.utils.Utilits;
 
-import javax.jms.Connection;
+import javax.jms.*;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -53,6 +55,9 @@ public class MainScreenController implements Initializable {
     private Connection connection;
 
     private Scanner scanner;
+
+    @FXML
+    private TextArea logs;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -130,6 +135,20 @@ public class MainScreenController implements Initializable {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
+            });
+            send.setOnAction(event -> {
+                try
+                {
+                    Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+                    Queue queue = session.createQueue("correqts_in");
+                    MessageProducer producer = session.createProducer(queue);
+                    TextMessage request = session.createTextMessage(inputForm.getText());
+                    producer.send(request);
+                    logs.setText("Request sended correqts_in");
+                } catch (JMSException e) {
+                    e.printStackTrace();
+                }
+
             });
 
     }

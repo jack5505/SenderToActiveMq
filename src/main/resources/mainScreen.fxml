@@ -49,7 +49,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <TextArea editable="false" layoutX="1032.0" layoutY="472.0" prefHeight="420.0" prefWidth="246.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="1032.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="472.0">
+      <TextArea fx:id="logs" editable="false" layoutX="1032.0" layoutY="472.0" prefHeight="420.0" prefWidth="246.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="1032.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="472.0">
          <font>
             <Font size="14.0" />
          </font>
