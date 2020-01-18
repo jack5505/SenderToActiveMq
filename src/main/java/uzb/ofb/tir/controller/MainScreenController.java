@@ -95,10 +95,11 @@ public class MainScreenController implements Initializable {
         boolean yes = true;
         scanner = new Scanner(new File(this.path));
         int i = 0;
-        while (scanner.hasNextLine()){
-                if(i == 0){
+        while (scanner.hasNext()){
+            if(i == 0){
                     address.setText(scanner.nextLine());
-                }if(i == 1){
+                }
+            if(i == 1){
                     port.setText(scanner.nextLine());
             }if(i == 2){
                     username.setText(scanner.nextLine());
@@ -107,9 +108,12 @@ public class MainScreenController implements Initializable {
             }
                 i++;
         }
+        System.out.println(i);
         scanner.close();
         if(i >= 4){
             connection = ActiveMqOperations.connectWithActiveMq(address.getText(),port.getText(),username.getText(),password.getText(),status);
+        }else {
+            status.setText("Fill All fields of settings");
         }
 
     }
