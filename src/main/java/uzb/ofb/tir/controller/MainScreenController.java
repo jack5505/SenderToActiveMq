@@ -71,7 +71,7 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-
+        status.setText("");
         requestR.setSelected(true);
         URL show = MainScreenController.class.getProtectionDomain().getCodeSource().getLocation();
         path = show.getPath();
@@ -138,6 +138,7 @@ public class MainScreenController implements Initializable {
                 {
                     PrintWriter printWriter = new PrintWriter(new File(this.path));
                     printWriter.println(address.getText());
+                    printWriter.println(port.getText());
                     printWriter.println(username.getText());
                     printWriter.println(password.getText());
                     printWriter.close();
@@ -146,28 +147,11 @@ public class MainScreenController implements Initializable {
                     e.printStackTrace();
                 }
             });
+            send1.setOnAction(event -> {
+                sendGetToQueue();
+            });
             send.setOnAction(event -> {
-                try
-                {
-                    Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
-                    Queue queue = session.createQueue("correqts_in");
-                    MessageProducer producer = session.createProducer(queue);
-                    TextMessage request = session.createTextMessage(inputForm.getText());
-                    logs.setText(logs.getText()+"Request sended correqts_in\n");
-                    producer.send(request);
-                    System.out.println("Sended");
-                    Queue queue1 = session.createQueue("correqts_out");
-                    MessageConsumer messageConsumer = session.createConsumer(queue1);
-                    TextMessage message = (TextMessage) messageConsumer.receive();
-                    System.out.println("Recieve");
-                    logs.setText(logs.getText()+"Response get from correqts_out\n");
-                    if(requestR.isSelected()){
-                        output.setText("");
-                        output.setText(output.getText()+"\n"+message.getText());
-                    }
-                } catch (JMSException e) {
-                    e.printStackTrace();
-                }
+                sendGetToQueue();
 
             });
             requestR.setOnAction(event -> {
@@ -187,6 +171,30 @@ public class MainScreenController implements Initializable {
                 //Modify location place of TextFields
                 AnchorPane.setBottomAnchor(inputForm,30.0);
             });
+    }
+
+    private void sendGetToQueue() {
+        try
+        {
+            Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+            Queue queue = session.createQueue("correqts_in");
+            MessageProducer producer = session.createProducer(queue);
+            TextMessage request = session.createTextMessage(inputForm.getText());
+            logs.setText(logs.getText()+"Request sended correqts_in\n");
+            producer.send(request);
+            System.out.println("Sended");
+            Queue queue1 = session.createQueue("correqts_out");
+            MessageConsumer messageConsumer = session.createConsumer(queue1);
+            TextMessage message = (TextMessage) messageConsumer.receive();
+            System.out.println("Recieve");
+            logs.setText(logs.getText()+"Response get from correqts_out\n");
+            if(requestR.isSelected()){
+                output.setText("");
+                output.setText(output.getText()+"\n"+message.getText());
+            }
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
     }
 
 
