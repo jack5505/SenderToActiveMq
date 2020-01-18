@@ -3,6 +3,7 @@ package uzb.ofb.tir.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import uzb.ofb.tir.utils.ActiveMqOperations;
 import uzb.ofb.tir.utils.Utilits;
 
@@ -21,6 +22,9 @@ public class MainScreenController implements Initializable {
     //PrefHeigh 859
     @FXML
     private TextArea  inputForm;
+
+    @FXML
+    private TextArea output;
 
     @FXML
     private TextField address;
@@ -58,7 +62,9 @@ public class MainScreenController implements Initializable {
     @FXML
     private RadioButton requestR;
 
-    
+    @FXML
+    private AnchorPane anchorPane;
+
     @FXML
     private TextArea logs;
 
@@ -66,7 +72,7 @@ public class MainScreenController implements Initializable {
     public void initialize(URL location, ResourceBundle resources)
     {
 
-        request.fire();
+        requestR.setSelected(true);
         URL show = MainScreenController.class.getProtectionDomain().getCodeSource().getLocation();
         path = show.getPath();
         try {
@@ -147,15 +153,18 @@ public class MainScreenController implements Initializable {
                     Queue queue = session.createQueue("correqts_in");
                     MessageProducer producer = session.createProducer(queue);
                     TextMessage request = session.createTextMessage(inputForm.getText());
+                    logs.setText(logs.getText()+"Request sended correqts_in\n");
                     producer.send(request);
                     System.out.println("Sended");
-                    logs.setText(logs.getText()+"Request sended correqts_in\n");
                     Queue queue1 = session.createQueue("correqts_out");
                     MessageConsumer messageConsumer = session.createConsumer(queue1);
                     TextMessage message = (TextMessage) messageConsumer.receive();
                     System.out.println("Recieve");
-                    logs.setText(logs.getText()+"Response get from correqts_out");
-                    inputForm.setText(inputForm.getText()+"\n"+message.getText());
+                    logs.setText(logs.getText()+"Response get from correqts_out\n");
+                    if(requestR.isSelected()){
+                        output.setText("");
+                        output.setText(output.getText()+"\n"+message.getText());
+                    }
                 } catch (JMSException e) {
                     e.printStackTrace();
                 }
@@ -164,10 +173,19 @@ public class MainScreenController implements Initializable {
             requestR.setOnAction(event -> {
                 requestR.setSelected(true);
                 request.setSelected(false);
+                output.setVisible(true);
+                inputForm.setPrefHeight(350);
+                //Modify location place of TextFields
+                AnchorPane.setBottomAnchor(inputForm,521.0);
+                AnchorPane.setBottomAnchor(output,13.0);
             });
             request.setOnAction(event -> {
                 request.setSelected(true);
                 requestR.setSelected(false);
+                output.setVisible(false);
+                inputForm.setPrefHeight(858);
+                //Modify location place of TextFields
+                AnchorPane.setBottomAnchor(inputForm,30.0);
             });
     }
 
