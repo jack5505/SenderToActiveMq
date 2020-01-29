@@ -108,7 +108,6 @@ public class MainScreenController implements Initializable {
             }
                 i++;
         }
-        System.out.println(i);
         scanner.close();
         if(i >= 4){
             connection = ActiveMqOperations.connectWithActiveMq(address.getText(),port.getText(),username.getText(),password.getText(),status);
@@ -152,6 +151,7 @@ public class MainScreenController implements Initializable {
                 }
             });
             send1.setOnAction(event -> {
+              //  logs.setText(logs.getText()+"Request sended correqts_in\n");
                 sendGetToQueue();
             });
             send.setOnAction(event -> {
@@ -178,27 +178,45 @@ public class MainScreenController implements Initializable {
     }
 
     private void sendGetToQueue() {
-        try
-        {
-            Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
-            Queue queue = session.createQueue("correqts_in");
-            MessageProducer producer = session.createProducer(queue);
-            TextMessage request = session.createTextMessage(inputForm.getText());
-            logs.setText(logs.getText()+"Request sended correqts_in\n");
-            producer.send(request);
-            System.out.println("Sended");
-            Queue queue1 = session.createQueue("correqts_out");
-            MessageConsumer messageConsumer = session.createConsumer(queue1);
-            TextMessage message = (TextMessage) messageConsumer.receive();
-            System.out.println("Recieve");
-            logs.setText(logs.getText()+"Response get from correqts_out\n");
-            if(requestR.isSelected()){
-                output.setText("");
-                output.setText(output.getText()+"\n"+message.getText());
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                logs.setText(logs.getText()+"Request sended correqts_in\n");
             }
-        } catch (JMSException e) {
-            e.printStackTrace();
-        }
+        }.run();
+
+       Thread thread = new Thread(){
+           @Override
+           public void run() {
+               super.run();
+               try
+               {
+                   Thread.sleep(1000);
+                   Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+                   Queue queue = session.createQueue("correqts_in");
+                   MessageProducer producer = session.createProducer(queue);
+                   TextMessage request = session.createTextMessage(inputForm.getText());
+                   producer.send(request);
+                   Queue queue1 = session.createQueue("correqts_out");
+                   MessageConsumer messageConsumer = session.createConsumer(queue1);
+                   TextMessage message = (TextMessage) messageConsumer.receive();
+                   System.out.println("Recieve");
+                   logs.setText(logs.getText()+"Response get from correqts_out\n");
+                   if(requestR.isSelected()){
+                       output.setText("");
+                       output.setText(output.getText()+"\n"+message.getText());
+                   }
+               } catch (JMSException e) {
+                   e.printStackTrace();
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
+           }
+       };
+       thread.start();
+
+
     }
 
 
