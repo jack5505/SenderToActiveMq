@@ -1,13 +1,18 @@
 package uzb.ofb.tir.controller;
 
+import com.company.Wtransfer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import org.apache.activemq.ActiveMQConnection;
 import uzb.ofb.tir.db.OperationsDb;
+import uzb.ofb.tir.dto.ActiveMqDto;
 import uzb.ofb.tir.utils.ActiveMqOperations;
 import uzb.ofb.tir.utils.Utilits;
+import uzb.ofb.tir.utils.Views;
 
 import javax.jms.*;
 import java.io.File;
@@ -70,18 +75,22 @@ public class MainScreenController implements Initializable {
     @FXML
     private TextArea logs;
 
+    @FXML
+    private Button history;
+
+    public static ActiveMqDto activeMqDto = new ActiveMqDto();
+
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+
         uzb.ofb.tir.db.Connection.getInstance().getConnection();
         status.setText("");
         requestR.setSelected(true);
         clicks();
+        filter();
 
     }
-
-
-
 
 
 
@@ -92,6 +101,20 @@ public class MainScreenController implements Initializable {
             port.setText(OperationsDb.getSettings().getPort()+"");
             username.setText(OperationsDb.getSettings().getUsername());
             password.setText(OperationsDb.getSettings().getPassword());
+
+            settings.setOnAction(event -> {
+                activeMqDto.setPort(Integer.parseInt(port.getText()));
+                activeMqDto.setUsername(username.getText());
+                activeMqDto.setPassword(password.getText());
+                activeMqDto.setAddress(address.getText());
+                OperationsDb.ChangeSettings();
+            });
+
+            history.setOnAction(event -> {
+                Wtransfer wtransfer = new Wtransfer(Views.main.listRequests);
+                wtransfer.show();
+            });
+
             send1.setOnAction(event -> {
               //  logs.setText(logs.getText()+"Request sended correqts_in\n");
                 sendGetToQueue();
@@ -161,8 +184,20 @@ public class MainScreenController implements Initializable {
        };
        thread.start();
 
-
     }
+
+    private void filter() {
+        port.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    port.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+    }
+
 
 
 }

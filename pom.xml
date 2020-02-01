@@ -35,6 +35,12 @@
             <version>9.1-901-1.jdbc4</version>
         </dependency>
 
+        <dependency>
+            <groupId>groupId</groupId>
+            <artifactId>wtransfer</artifactId>
+            <version>1.0</version>
+        </dependency>
+
 
     </dependencies>
     <build>

@@ -39,12 +39,12 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="settings" layoutX="1163.0" layoutY="393.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="118.0" text="Save Settings">
+      <Button fx:id="settings" layoutX="1163.0" layoutY="394.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="118.0" text="Save Settings">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="send1" layoutX="55.0" layoutY="6.0" maxHeight="30.0" maxWidth="69.0" minHeight="30.0" minWidth="69.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" text="Send" AnchorPane.bottomAnchor="890.0">
+      <Button fx:id="send1" layoutX="51.0" layoutY="8.0" maxHeight="30.0" maxWidth="69.0" minHeight="30.0" minWidth="69.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" text="Send" AnchorPane.bottomAnchor="888.0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -70,8 +70,13 @@
          </font>
       </Label>
       <TextField fx:id="port" layoutX="1033.0" layoutY="201.0" prefHeight="25.0" prefWidth="237.0" AnchorPane.leftAnchor="1033.0" AnchorPane.rightAnchor="38.0" />
-      <RadioButton fx:id="request" layoutX="158.0" layoutY="13.0" mnemonicParsing="false" text="Request" AnchorPane.bottomAnchor="896.0" />
-      <RadioButton fx:id="requestR" layoutX="272.0" layoutY="13.0" mnemonicParsing="false" text="Request/Response" AnchorPane.bottomAnchor="896.0" />
+      <RadioButton fx:id="request" layoutX="328.0" layoutY="13.0" mnemonicParsing="false" text="Request" AnchorPane.bottomAnchor="896.0" />
+      <RadioButton fx:id="requestR" layoutX="442.0" layoutY="13.0" mnemonicParsing="false" text="Request/Response" AnchorPane.bottomAnchor="896.0" />
       <TextArea fx:id="output" layoutX="40.0" layoutY="438.0" prefHeight="475.0" prefWidth="938.0" AnchorPane.bottomAnchor="13.0" />
+      <Button fx:id="history" layoutX="160.0" layoutY="8.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" text="History" AnchorPane.bottomAnchor="888.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
