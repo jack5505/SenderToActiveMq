@@ -27,6 +27,9 @@ public class MainScreenController implements Initializable {
 
     //PrefWidth 938
     //PrefHeigh 859
+
+    public static MainScreenController  instance;
+
     @FXML
     private TextArea  inputForm;
 
@@ -80,10 +83,12 @@ public class MainScreenController implements Initializable {
 
     public static ActiveMqDto activeMqDto = new ActiveMqDto();
 
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-
+        instance = this;
         uzb.ofb.tir.db.Connection.getInstance().getConnection();
         status.setText("");
         requestR.setSelected(true);
@@ -189,6 +194,7 @@ public class MainScreenController implements Initializable {
 
     }
 
+
     private void filter() {
         port.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -200,7 +206,9 @@ public class MainScreenController implements Initializable {
             }
         });
     }
-
+    public  void changeInputReuquest(int requestID){
+        inputForm.setText(""+OperationsDb.getSelectedId(requestID));
+    }
 
 
 }
