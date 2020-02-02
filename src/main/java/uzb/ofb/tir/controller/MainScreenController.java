@@ -86,6 +86,8 @@ public class MainScreenController implements Initializable {
 
     public static ActiveMqDto activeMqDto = new ActiveMqDto();
 
+    @FXML
+    private CheckBox save;
 
 
     @Override
@@ -160,8 +162,11 @@ public class MainScreenController implements Initializable {
         if(Utilits.checkRequest(inputForm.getText()))
         {
             dbStatus.setVisible(true);
-            dbStatus.setText("Passed Validation saved");
-            OperationsDb.insertRequest(inputForm.getText());
+            dbStatus.setText("Passed Validation");
+            if(save.isSelected()){
+                    OperationsDb.insertRequest(inputForm.getText());
+                    dbStatus.setText(dbStatus.getText()+" "+"saved");
+            }
         new Thread(){
             @Override
             public void run() {
@@ -199,11 +204,12 @@ public class MainScreenController implements Initializable {
            }
        };
        thread.start();
-        }else
+        }
+        else
             {
                 dbStatus.setVisible(true);
                 dbStatus.setText("Error don't passed validation");
-        }
+            }
     }
 
 
