@@ -146,6 +146,8 @@ public class MainScreenController implements Initializable {
     }
 
     private void sendGetToQueue() {
+        //Todo test request correctly
+        OperationsDb.insertRequest(inputForm.getText());
         new Thread(){
             @Override
             public void run() {

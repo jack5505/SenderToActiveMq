@@ -4,6 +4,7 @@ import uzb.ofb.tir.controller.MainScreenController;
 import uzb.ofb.tir.dto.ActiveMqDto;
 import uzb.ofb.tir.dto.RequestDto;
 import uzb.ofb.tir.utils.ActiveMqOperations;
+import uzb.ofb.tir.utils.Utilits;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,4 +61,16 @@ public class OperationsDb {
         }
         return list;
     };
+
+    public static void  insertRequest(String request){
+        try
+        {
+        PreparedStatement preparedStatement = Connection.getInstance().getConnection().prepareStatement("insert into requests(headers,request) values(?,?)");
+        preparedStatement.setString(1, Utilits.getRequestHead(request));
+        preparedStatement.setString(2,request);
+        preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

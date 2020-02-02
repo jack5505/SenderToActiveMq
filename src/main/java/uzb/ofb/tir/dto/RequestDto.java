@@ -13,4 +13,7 @@ public class RequestDto {
         return id;
     }
 
+    public String getHeader() {
+        return header;
+    }
 }

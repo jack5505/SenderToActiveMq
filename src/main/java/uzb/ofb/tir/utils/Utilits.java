@@ -17,4 +17,12 @@ public class Utilits {
         StringBuilder b = new StringBuilder(temp);
         return b.reverse().toString();
     }
+    public static String getRequestHead(String request){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 1 ; i < request.length() && request.charAt(i) !=' '; i++){
+            stringBuilder.append(request.charAt(i));
+        }
+        return stringBuilder.toString();
+    }
+
 }
