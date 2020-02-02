@@ -1,10 +1,8 @@
 package uzb.ofb.tir.db;
 
-import oracle.jdbc.proxy.annotation.Pre;
-import uzb.ofb.tir.controller.MainScreenController;
+
 import uzb.ofb.tir.dto.ActiveMqDto;
 import uzb.ofb.tir.dto.RequestDto;
-import uzb.ofb.tir.utils.ActiveMqOperations;
 import uzb.ofb.tir.utils.Utilits;
 
 import java.sql.PreparedStatement;
