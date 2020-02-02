@@ -101,7 +101,7 @@ public class MainScreenController implements Initializable {
             port.setText(OperationsDb.getSettings().getPort()+"");
             username.setText(OperationsDb.getSettings().getUsername());
             password.setText(OperationsDb.getSettings().getPassword());
-
+            connection = ActiveMqOperations.connectWithActiveMq(address.getText(),port.getText(),username.getText(),password.getText(),status);
             settings.setOnAction(event -> {
                 activeMqDto.setPort(Integer.parseInt(port.getText()));
                 activeMqDto.setUsername(username.getText());
@@ -160,6 +160,7 @@ public class MainScreenController implements Initializable {
                super.run();
                try
                {
+
                    Thread.sleep(1000);
                    Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
                    Queue queue = session.createQueue("correqts_in");
