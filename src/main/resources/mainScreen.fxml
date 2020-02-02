@@ -59,11 +59,6 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="status" alignment="CENTER" contentDisplay="CENTER" layoutX="994.0" layoutY="21.0" prefHeight="25.0" prefWidth="296.0" text="Label" AnchorPane.leftAnchor="994.0" AnchorPane.rightAnchor="18.0">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </Label>
       <Label layoutX="1031.0" layoutY="165.0" prefHeight="17.0" prefWidth="204.0" text="Port">
          <font>
             <Font size="14.0" />
@@ -78,5 +73,15 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
+      <Label fx:id="status" alignment="CENTER" contentDisplay="CENTER" layoutX="994.0" layoutY="21.0" prefHeight="25.0" prefWidth="296.0" text="Label" AnchorPane.leftAnchor="994.0" AnchorPane.rightAnchor="18.0">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="dbStatus" layoutX="674.0" layoutY="15.0" prefHeight="25.0" prefWidth="269.0" text="Saved">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -31,8 +31,10 @@ public class HistoryListController implements Initializable {
         head.setCellValueFactory(new PropertyValueFactory<RequestDto,String>("header"));
         tableData.getItems().addAll(OperationsDb.listRequests());
 //        MainScreenController.instance.changeInputReuquest();
-        tableData.setOnMouseClicked(event -> {
-            if(event.getClickCount() == 2){
+        tableData.setOnMouseClicked(event ->
+        {
+            if(event.getClickCount() == 2)
+            {
                 MainScreenController.instance.changeInputReuquest(Integer.parseInt(tableData.getSelectionModel().getSelectedItem().getId().toString()));
                 Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
                 stage.close();

@@ -18,11 +18,26 @@ public class Utilits {
         return b.reverse().toString();
     }
     public static String getRequestHead(String request){
+        return getHeader(request).toString();
+    }
+
+    public static boolean checkRequest(String request){
+        //Check to xmlns="http://bssys.com/sbns/integration"
+        boolean check = true;
+        check &= request.contains("xmlns=\"http://bssys.com/sbns/integration\"");
+        StringBuilder stringBuilder1 = getHeader(request);
+        check &= request.contains("</"+stringBuilder1.toString()+">");
+        check &= request.contains("<"+stringBuilder1.toString()+" "+"xmlns=\"http://bssys.com/sbns/integration\""+">");
+        return check;
+    }
+
+    private static StringBuilder getHeader(String request) {
         StringBuilder stringBuilder = new StringBuilder();
-        for(int i = 1 ; i < request.length() && request.charAt(i) !=' '; i++){
+        for(int i = 1 ; i < request.length() && request.charAt(i)!=' ';i ++){
             stringBuilder.append(request.charAt(i));
         }
-        return stringBuilder.toString();
+        return stringBuilder;
     }
+
 
 }

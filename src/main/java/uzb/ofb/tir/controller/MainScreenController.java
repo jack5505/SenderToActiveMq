@@ -81,6 +81,9 @@ public class MainScreenController implements Initializable {
     @FXML
     private Button history;
 
+    @FXML
+    private Label dbStatus;
+
     public static ActiveMqDto activeMqDto = new ActiveMqDto();
 
 
@@ -88,6 +91,7 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+        dbStatus.setVisible(false);
         instance = this;
         uzb.ofb.tir.db.Connection.getInstance().getConnection();
         status.setText("");
@@ -152,7 +156,12 @@ public class MainScreenController implements Initializable {
 
     private void sendGetToQueue() {
         //Todo test request correctly
-        OperationsDb.insertRequest(inputForm.getText());
+        System.out.println("Check for validation");
+        if(Utilits.checkRequest(inputForm.getText()))
+        {
+            dbStatus.setVisible(true);
+            dbStatus.setText("Passed Validation saved");
+            OperationsDb.insertRequest(inputForm.getText());
         new Thread(){
             @Override
             public void run() {
@@ -167,7 +176,6 @@ public class MainScreenController implements Initializable {
                super.run();
                try
                {
-
                    Thread.sleep(1000);
                    Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
                    Queue queue = session.createQueue("correqts_in");
@@ -191,7 +199,11 @@ public class MainScreenController implements Initializable {
            }
        };
        thread.start();
-
+        }else
+            {
+                dbStatus.setVisible(true);
+                dbStatus.setText("Error don't passed validation");
+        }
     }
 
 
